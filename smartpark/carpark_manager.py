@@ -30,7 +30,8 @@ class CarparkManager(CarparkSensorListener,CarparkDataProvider):
 
     def __init__(self, log_file='carpark.log'):
         #Load config
-        self.config_data = parse_config(CarparkManager.CONFIG_FILE)
+        self.config_data = parse_config(self.CONFIG_FILE)
+        self.car = Car(self.config_data)
 
         #Setup logging
         logging.basicConfig(
@@ -59,12 +60,13 @@ class CarparkManager(CarparkSensorListener,CarparkDataProvider):
         old_spaces = self.config_data['free-spaces']
         old_cars = self.config_data['total-cars']
         if old_spaces == 0:
-            print("No avaailble spaces")
+            print("No available spaces")
             logging.warning(f"Attempted to exceed limits")
             return False
 
         print('Car in! ' + license_plate)
-        self.config_data['license-plate'].append(license_plate)
+        self.car.record_license(license_plate)
+
         self.config_data['free-spaces'] = max(0, self.config_data['free-spaces'] - 1)
         self.config_data['total-cars'] = max(0, self.config_data['total-cars'] + 1)
         write_config(self.CONFIG_FILE, self.config_data)
@@ -96,12 +98,15 @@ class CarparkManager(CarparkSensorListener,CarparkDataProvider):
         write_config(self.CONFIG_FILE, self.config_data)
         logging.info(f'Temperature updated to: {self.config_data['temperature']}')
 
+
+
+
 class Car():
     CONFIG_FILE = "samples_and_snippets\\config.json"
 
-    def __init__(self,plate=None, entry_time=0, exit_time=0, log_file='carpark.log'):
+    def __init__(self,config_data, plate=None, entry_time=0, exit_time=0, log_file='carpark.log'):
         #Load config
-        self.config_data = parse_config(CarparkManager.CONFIG_FILE)
+        self.config_data = config_data
 
         #Setup logging
         logging.basicConfig(
@@ -112,13 +117,15 @@ class Car():
 
         )
         logging.info('CarparkManager started')
-        pass
 
         self.LicensePlate = plate
         self.EntryTime = entry_time
         self.ExitTime = exit_time
-    
+
     def record_license(self, license_plate):
+        """Records string as license plate and updates JSON confing file with string
+        
+        Logs the recording and updating of license-plate list"""
         self.config_data['license-plate'].append(license_plate)
         write_config(self.CONFIG_FILE, self.config_data)
-        
+        logging.info(f"Recorded license: {license_plate}")

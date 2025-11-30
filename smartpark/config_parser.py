@@ -33,8 +33,6 @@ Finally, you can use `yaml` if you prefer.
 
 """
 
-
-
 def parse_config(config_file: str) -> dict:
     """Parse the config file and return the values as a dictionary"""
     import json
@@ -44,7 +42,7 @@ def parse_config(config_file: str) -> dict:
 
 
 def write_config(config_file: str, data: dict, index: int = 0):
-    #Write to config file
+    """Writes to config file"""
     import json
 
     with open(config_file) as output_file:
