@@ -75,7 +75,7 @@ class WindowedDisplay:
 class CarParkDisplay:
     """Provides a simple display of the car park status. This is a skeleton only. The class is designed to be customizable without requiring and understanding of tkinter or threading."""
     # determines what fields appear in the UI
-    fields = ['Available bays', 'Temperature', 'At']
+    fields = ['Available bays', 'Temperature', 'Current Time']
 
     def __init__(self,root):
         self.window = WindowedDisplay(root,
@@ -156,14 +156,16 @@ class CarDetectorWindow:
             self.listeners.append(listener)
 
     def incoming_car(self):
-        print("Car goes in")
         for listener in self.listeners:
-            listener.incoming_car(self.current_license)
+            if listener.incoming_car(self.current_license):
+                print("Car goes in")
+
 
     def outgoing_car(self):
-        print("Car goes out")
         for listener in self.listeners:
-            listener.outgoing_car(self.current_license)
+            if listener.outgoing_car(self.current_license):
+                print("Car goes out")
+            
 
     def temperature_changed(self,temp):
         for listener in self.listeners:
@@ -175,6 +177,7 @@ if __name__ == '__main__':
 
     #TODO: This is my dodgy mockup. Replace it with a good one!
     manager=carpark_manager.CarparkManager()
+    #car = carpark_manager.Car()
 
     display=CarParkDisplay(root)
     #TODO: Set the display to use your data source

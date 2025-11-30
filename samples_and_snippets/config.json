@@ -2,9 +2,12 @@
     "CarParks": [
         {
             "name": "raf-park-international",
-            "total-spaces": 117,
-            "total-cars": 3,
-            "temperature": 100.0,
+            "license-plate": [
+                "12"
+            ],
+            "free-spaces": 0,
+            "total-cars": 1,
+            "temperature": 12.0,
             "location": "moondalup",
             "broker": "localhost",
             "port": 1883,
