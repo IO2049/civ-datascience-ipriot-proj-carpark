@@ -42,6 +42,22 @@ def parse_config(config_file: str) -> dict:
         config = json.load(input_file)
     return config["CarParks"][0]
 
+
+def write_config(config_file: str, data: dict, index: int = 0):
+    #Write to config file
+    import json
+
+    with open(config_file) as output_file:
+        config = json.load(output_file)
+
+    config['CarParks'][index] = data
+    
+    with open(config_file, 'w') as output_file:
+        json.dump(config, output_file, indent=4)
+
+
 if __name__ == '__main__':
     cfg_data=parse_config("samples_and_snippets\\config.json")
     print(cfg_data)
+
+#print(cfg_data["name"])

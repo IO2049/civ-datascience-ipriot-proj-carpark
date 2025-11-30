@@ -1,0 +1,4 @@
+*Inside civ-datascience-ipriot-proj-carpark
+python3 -m venv .venv
+source .venv/Scripts/activate
+pip install -e
